@@ -15,7 +15,7 @@
 			</tr>
 		<% end %>
 	</table>
-	<form id="deploy-ships" action="/launch_game/1" method="post">
+	<form id="deploy-ships" action=<%="/launch_game/#{@counter}"%> method="post">
 		<p>
 			<%=@current_ship.class%> <label for="ship_start">Start</label>
 			<input type="text" name="ship_start">

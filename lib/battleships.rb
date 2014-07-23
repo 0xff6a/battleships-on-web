@@ -3,7 +3,7 @@ require_relative 'game'
 
 class BattleShips < Sinatra::Base
 
-  GAME = Game.new 
+  GAME = Game.new
 
   enable :sessions
   set :session_secret, "My session secret"
@@ -11,6 +11,7 @@ class BattleShips < Sinatra::Base
 
   get '/' do
     session[:players] = []
+    session[:counter] = 0
     session[:greeting] = "What's your name?"
     erb :index
   end
@@ -24,12 +25,8 @@ class BattleShips < Sinatra::Base
 		@name = params[:player]
     redirect '/name_input' if @name.empty?
     session[:greeting] = "Welcome #{@name} please enter your opponent"
-    puts GAME.object_id
+    
     GAME.add(Player.new(params[:player]))
-    puts GAME.players
-    puts params[:player]
-    puts GAME.player_count
-
     redirect '/launch_game' if GAME.player_count == 2
     redirect '/full' if GAME.player_count > 2
     redirect '/new_game'
@@ -38,7 +35,9 @@ class BattleShips < Sinatra::Base
   get '/launch_game' do
     @deploying_player = GAME.current_player.name
     @target_grid = GAME.current_player.grid
-    @current_ship = GAME.current_player.ships[0]
+    @current_ship = GAME.current_player.ships[session[:counter]]
+    session[:counter] +=1
+    @counter = session[:counter]
     erb :launch_game
     # until session[:game].current_player.ships.empty?
     #   erb :launch_game
@@ -57,6 +56,8 @@ class BattleShips < Sinatra::Base
     GAME.current_player.deploy_ship_to(coords, ship_to_deploy)
     @target_grid = GAME.current_player.grid
     @current_ship = GAME.current_player.ships[n.to_i]
+    session[:counter] +=1
+    @counter = session[:counter]
     erb :launch_game
   end
 
