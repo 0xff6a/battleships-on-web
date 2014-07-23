@@ -10,7 +10,7 @@ class BattleShips < Sinatra::Base
   set :views, Proc.new{ File.join(root, '..', 'views') }
 
   get '/' do
-    session[:players] = []
+    session[:player] = ""
     session[:deployed_ships] = 0
     erb :index
   end
@@ -20,16 +20,16 @@ class BattleShips < Sinatra::Base
 	end
 
 	post '/new_game' do
-		@name = params[:player]
+		@name, session[:player] = params[:player], params[:player]
     redirect '/new_game' if @name.empty?
     GAME.add(Player.new(params[:player]))
-    redirect "/launch_game/#{GAME.current_player.name}" if GAME.start?
+    redirect "/launch_game/#{session[:player]}" if GAME.start?
     redirect '/full' if GAME.player_count > 2
     redirect '/waiting'
   end
 
   get '/waiting' do
-    redirect "/launch_game/#{GAME.current_player.name}" if GAME.start?
+    redirect "/launch_game/#{session[:player]}" if GAME.start?
     erb :waiting
   end
     
@@ -42,8 +42,8 @@ class BattleShips < Sinatra::Base
   get '/launch_game/:player' do |player|
     session[:counter] = 0
     @deploying_player = player
-    @target_grid = GAME.current_player.grid
-    @current_ship = GAME.current_player.ships[session[:counter]]
+    @target_grid = GAME.player(player).grid
+    @current_ship = GAME.player(player).ships[session[:counter]]
     session[:counter] +=1
     @counter = session[:counter]
     erb :launch_game
@@ -59,18 +59,18 @@ class BattleShips < Sinatra::Base
 
   post '/launch_game/:player/:n' do |player, n|
     @deploying_player = player
-    ship_to_deploy = GAME.current_player.ships[n.to_i-1]
+    ship_to_deploy = GAME.player(player).ships[n.to_i-1]
     coords = GAME.generate_coordinates(params[:ship_start].to_sym, params[:ship_end].to_sym)
-    GAME.current_player.deploy_ship_to(coords, ship_to_deploy)
-    @target_grid = GAME.current_player.grid
-    @current_ship = GAME.current_player.ships[n.to_i]
+    GAME.player(player).deploy_ship_to(coords, ship_to_deploy)
+    redirect "/launch_game/#{player}/waiting" if session[:counter] == 5
+    @target_grid = GAME.player(player).grid
+    @current_ship = GAME.player(player).ships[n.to_i]
     session[:counter] +=1
     @counter = session[:counter]
-    redirect '/launch_game/waiting' if @counter == 5
     erb :launch_game
   end
 
-  get '/launch_game/waiting' do
+  get '/launch_game/:player/waiting' do
     erb :waiting
   end
 
