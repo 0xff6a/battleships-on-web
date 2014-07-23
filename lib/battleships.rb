@@ -8,7 +8,7 @@ class BattleShips < Sinatra::Base
   enable :sessions
   set :session_secret, "My session secret"
   set :views, Proc.new{ File.join(root, '..', 'views') }
-
+  set :pulic, Proc.new{ File.join(root. '..', 'public') }
   get '/' do
     session[:players] = []
     session[:greeting] = "What's your name?"
