@@ -4,7 +4,7 @@ describe Game do
 
 	let(:game) 		{ Game.new																																		}
 	let(:player1) { double :player1, :grid => grid1, :deploy_ships => nil, :display_grid => nil	}
-	let(:player2)	{ double :player2, :grid => grid2																							}
+	let(:player2)	{ double :player2, :name => "jeremy", :grid => grid2													}
 	let(:grid1)		{ double :grid1, :count_sunken_ships => 5																			}
 	let(:grid2)		{ double :grid2, :count_sunken_ships => 0																			}
 
@@ -50,6 +50,11 @@ describe Game do
 		it 'can start the game' do
 			game.start_game
 			expect(game.status).to be :started
+		end
+
+		it 'should return player by name' do
+			game.add(player2)
+			expect(game.player("jeremy")).to eq player2
 		end
 
 	end

@@ -11,25 +11,33 @@ class BattleShips < Sinatra::Base
 
   get '/' do
     session[:players] = []
-    session[:greeting] = "What's your name?"
+    session[:deployed_ships] = 0
     erb :index
   end
 
   get '/new_game' do
-    @greeting = session[:greeting]
   	erb :new_game
 	end
 
 	post '/new_game' do
 		@name = params[:player]
-    redirect '/name_input' if @name.empty?
-    session[:greeting] = "Welcome #{@name} please enter your opponent"
-    
+    redirect '/new_game' if @name.empty?
     GAME.add(Player.new(params[:player]))
-    redirect "/launch_game/#{GAME.current_player.name}" if GAME.player_count == 2
+    redirect "/launch_game/#{GAME.current_player.name}" if GAME.start?
     redirect '/full' if GAME.player_count > 2
-    redirect '/new_game'
-	end
+    redirect '/waiting'
+  end
+
+  get '/waiting' do
+    redirect "/launch_game/#{GAME.current_player.name}" if GAME.start?
+    erb :waiting
+  end
+    
+ #    GAME.add(Player.new(params[:player]))
+ #    redirect "/launch_game/#{GAME.current_player.name}" if GAME.player_count == 2
+ #    redirect '/full' if GAME.player_count > 2
+ #    redirect '/new_game'
+	# end
 
   get '/launch_game/:player' do |player|
     session[:counter] = 0
@@ -50,7 +58,7 @@ class BattleShips < Sinatra::Base
   end
 
   post '/launch_game/:player/:n' do |player, n|
-    @deploying_player = GAME.current_player.name
+    @deploying_player = player
     ship_to_deploy = GAME.current_player.ships[n.to_i-1]
     coords = GAME.generate_coordinates(params[:ship_start].to_sym, params[:ship_end].to_sym)
     GAME.current_player.deploy_ship_to(coords, ship_to_deploy)
@@ -58,32 +66,35 @@ class BattleShips < Sinatra::Base
     @current_ship = GAME.current_player.ships[n.to_i]
     session[:counter] +=1
     @counter = session[:counter]
-    if @counter == 5
-          
+    redirect '/launch_game/waiting' if @counter == 5
     erb :launch_game
   end
 
-  # post '/launch_game' do
-  #   @game.change_turn
-  #   redirect '/launch_game' 
-  # end
-
-  post '/play_game' do
-    puts params
-    "Hi"
-    #Loop
-    #Prompt the player
-    #Display their tracking grid
-    #Ask for coordinate (radio buttons?)
-    #Return cell message
-    #Attack cell if valid
-    #end game if victory declared
-    #change player
+  get '/launch_game/waiting' do
+    erb :waiting
   end
 
-  get '/play_game' do
+ #  # post '/launch_game' do
+ #  #   @game.change_turn
+ #  #   redirect '/launch_game' 
+ #  # end
 
-  end
+ #  post '/play_game' do
+ #    puts params
+ #    "Hi"
+ #    #Loop
+ #    #Prompt the player
+ #    #Display their tracking grid
+ #    #Ask for coordinate (radio buttons?)
+ #    #Return cell message
+ #    #Attack cell if valid
+ #    #end game if victory declared
+ #    #change player
+ #  end
+
+ #  get '/play_game' do
+
+ #  end
 
 
   # start the server if ruby file executed directly

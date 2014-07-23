@@ -20,6 +20,10 @@ class Game
 		players.last
 	end
 
+	def player(name)
+		players.select{ |player| player.name == name }.first
+	end
+
 	def add(player)
 		players << player
 	end
