@@ -16,11 +16,11 @@ class BattleShips < Sinatra::Base
   end
 
   get '/new_game' do
-  	erb :new_game
-	end
+    erb :new_game
+  end
 
-	post '/new_game' do
-		@name, session[:player] = params[:player], params[:player]
+  post '/new_game' do
+    @name, session[:player] = params[:player], params[:player]
     redirect '/new_game' if @name.empty?
     GAME.add(Player.new(params[:player]))
     redirect "/launch_game/#{session[:player]}" if GAME.start?
