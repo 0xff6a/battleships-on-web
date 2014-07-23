@@ -3,6 +3,8 @@ require_relative 'coordinate_validator'
 
 class Game
 
+	TOTAL_SHIP_LENGTH = 17
+
 	attr_accessor :players, :status
 
 	include CoordinateValidator
@@ -38,6 +40,10 @@ class Game
 
 	def end?
 		other_player.grid.count_sunken_ships == 5 or current_player.grid.count_sunken_ships == 5 
+	end
+
+	def ships_deployed?
+		players.all? { |player| player.grid.occupied_cell_count == TOTAL_SHIP_LENGTH }
 	end
 
 	def start_game

@@ -34,6 +34,10 @@ class Grid
 		@cells.flatten.count
 	end
 
+	def occupied_cell_count
+		@cells.flatten.select(&:occupied?).count
+	end
+
 end
 
 def grid_reference_to_index(grid_reference)

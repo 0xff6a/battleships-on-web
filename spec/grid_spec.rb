@@ -36,6 +36,10 @@ describe Grid do
 			grid.attack_cell(:a1)
 		end
 
+		it 'can count occupied cells' do
+			expect(grid.occupied_cell_count).to eq 0
+		end
+
 	end
 
 end
