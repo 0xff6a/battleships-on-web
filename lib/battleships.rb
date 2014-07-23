@@ -11,7 +11,6 @@ class BattleShips < Sinatra::Base
 
   get '/' do
     session[:players] = []
-    session[:counter] = 0
     session[:greeting] = "What's your name?"
     erb :index
   end
@@ -27,13 +26,14 @@ class BattleShips < Sinatra::Base
     session[:greeting] = "Welcome #{@name} please enter your opponent"
     
     GAME.add(Player.new(params[:player]))
-    redirect '/launch_game' if GAME.player_count == 2
+    redirect "/launch_game/#{GAME.current_player.name}" if GAME.player_count == 2
     redirect '/full' if GAME.player_count > 2
     redirect '/new_game'
 	end
 
-  get '/launch_game' do
-    @deploying_player = GAME.current_player.name
+  get '/launch_game/:player' do |player|
+    session[:counter] = 0
+    @deploying_player = player
     @target_grid = GAME.current_player.grid
     @current_ship = GAME.current_player.ships[session[:counter]]
     session[:counter] +=1
@@ -49,7 +49,7 @@ class BattleShips < Sinatra::Base
     #proceed to play_game once both ships have been placed
   end
 
-  post '/launch_game/:n' do |n|
+  post '/launch_game/:player/:n' do |player, n|
     @deploying_player = GAME.current_player.name
     ship_to_deploy = GAME.current_player.ships[n.to_i-1]
     coords = GAME.generate_coordinates(params[:ship_start].to_sym, params[:ship_end].to_sym)
@@ -58,6 +58,8 @@ class BattleShips < Sinatra::Base
     @current_ship = GAME.current_player.ships[n.to_i]
     session[:counter] +=1
     @counter = session[:counter]
+    if @counter == 5
+          
     erb :launch_game
   end
 
@@ -88,19 +90,4 @@ class BattleShips < Sinatra::Base
   run! if app_file == $0
 end
 
-  # def play_game
-  #   loop do
-  #     play_turn
-  #   end
-  # end
-
-  # def play_turn
-  #   begin
-  #     other_player.display_grid
-  #     current_player.shoot_at(other_player.grid, current_player.request_coordinate_to_attack)
-  #     end_game if victory_declared
-  #     change_turn
-  #   rescue Exception => error
-  #     puts error.message
-  #   end
-  # end
+  

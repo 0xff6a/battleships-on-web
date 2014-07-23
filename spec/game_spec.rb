@@ -4,8 +4,9 @@ describe Game do
 
 	let(:game) 		{ Game.new																																		}
 	let(:player1) { double :player1, :grid => grid1, :deploy_ships => nil, :display_grid => nil	}
-	let(:player2)	{ double :player2																															}
+	let(:player2)	{ double :player2, :grid => grid2																							}
 	let(:grid1)		{ double :grid1, :count_sunken_ships => 5																			}
+	let(:grid2)		{ double :grid2, :count_sunken_ships => 0																			}
 
 	it_should_behave_like 'a coordinate validator'
 
@@ -25,6 +26,13 @@ describe Game do
 			expect(game.player_count).to eq 0
 			game.add(player1)
 			expect(game.player_count).to eq 1
+		end
+
+		it 'should know when it can start' do
+			expect(game.start?).to be false
+			game.add(player1)
+			game.add(player2)
+			expect(game.start?).to be true
 		end
 
 		it 'should know which is the current player' do
@@ -54,19 +62,11 @@ describe Game do
 			expect(game.other_player).to be player1
 		end
 
-		it 'can declare victory' do
+		it 'knows when it can end' do
 			game.add(player2)
+			expect(game.end?).to be false
 			game.add(player1)
-			expect(game.victory_declared).to be true
-		end
-
-		it 'can end the game' do
-			game.end_game
-			expect(game.status).to eq :ended
-		end
-
-		it 'can stop a player attacking the same cell twice' do
-		
+			expect(game.end?).to be true
 		end
 
 	end

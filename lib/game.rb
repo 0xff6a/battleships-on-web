@@ -28,6 +28,14 @@ class Game
 		players.count
 	end
 
+	def start?
+		player_count == 2
+	end
+
+	def end?
+		other_player.grid.count_sunken_ships == 5 or current_player.grid.count_sunken_ships == 5 
+	end
+
 	def start_game
 		@status = :started
 	end
@@ -50,33 +58,6 @@ class Game
 
 	def change_turn
 		@players[0], @players[1] = @players[1], @players[0]
-	end
-
-	# def play_game
-	# 	loop do
-	# 		play_turn
-	# 	end
-	# end
-
-	# def play_turn
-	# 	begin
-	# 		other_player.display_grid
-	# 		current_player.shoot_at(other_player.grid, current_player.request_coordinate_to_attack)
-	# 		end_game if victory_declared
-	# 		change_turn
-	# 	rescue Exception => error
-	# 		puts error.message
-	# 	end
-	# end
-
-	def victory_declared
-		if other_player.grid.count_sunken_ships == 5 
-			true
-		end
-	end
-
-	def end_game
-		@status = :ended
 	end
 
 end
