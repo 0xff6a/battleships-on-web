@@ -8,7 +8,7 @@ class BattleShips < Sinatra::Base
   enable :sessions
   set :session_secret, "My session secret"
   set :views, Proc.new{ File.join(root, '..', 'views') }
-  set :pulic, Proc.new{ File.join(root. '..', 'public') }
+
   get '/' do
     session[:players] = []
     session[:greeting] = "What's your name?"
@@ -17,11 +17,11 @@ class BattleShips < Sinatra::Base
 
   get '/new_game' do
     @greeting = session[:greeting]
-  	erb :new_game
-	end
+    erb :new_game
+  end
 
-	post '/new_game' do
-		@name = params[:player]
+  post '/new_game' do
+    @name = params[:player]
     redirect '/name_input' if @name.empty?
     session[:greeting] = "Welcome #{@name} please enter your opponent"
     
@@ -29,7 +29,7 @@ class BattleShips < Sinatra::Base
     redirect "/launch_game/#{GAME.current_player.name}" if GAME.player_count == 2
     redirect '/full' if GAME.player_count > 2
     redirect '/new_game'
-	end
+  end
 
   get '/launch_game/:player' do |player|
     session[:counter] = 0
@@ -89,5 +89,3 @@ class BattleShips < Sinatra::Base
   # start the server if ruby file executed directly
   run! if app_file == $0
 end
-
-  
