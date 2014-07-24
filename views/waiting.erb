@@ -5,6 +5,9 @@
   <meta http-equiv="refresh" content="1">
 </head>
 <body>
-		<h1>Waiting for the other player...</h2>
+	 	<% if @message %>
+	 		<h1><%=@message %></h1>
+	 	<% end %>
+		<h2>Waiting for the other player...</h2>
 </body>
 </html>

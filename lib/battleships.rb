@@ -33,7 +33,7 @@ class BattleShips < Sinatra::Base
 
 
   get '/waiting' do
-    redirect "/launch_game/#{session[:player]}/0" if GAME.start?
+    redirect "/launch_game/#{session[:player]}/0" if GAME.start? 
     erb :waiting
   end
 
@@ -59,7 +59,7 @@ class BattleShips < Sinatra::Base
     
     GAME.player(player).deploy_ship_to(coords, ship_to_deploy)
 
-    redirect "/waiting/#{player}" if n == 5
+    redirect "/waiting_to_shoot/#{player}" if n == 5
     
     @target_grid = own_grid(player)
     @current_ship = nth_ship(n, player)
@@ -68,7 +68,13 @@ class BattleShips < Sinatra::Base
   end
 
   get '/waiting/:player' do |player|
-    redirect "/play_game/#{player}" if GAME.ships_deployed?
+    redirect "/play_game/#{player}" if GAME.ships_deployed? 
+    erb :waiting
+  end
+
+  get '/waiting_to_shoot/:player' do |player|
+    redirect "/play_game/#{player}" if your_turn?(player)
+    @message = params[:message]
     erb :waiting
   end
 
@@ -79,17 +85,23 @@ class BattleShips < Sinatra::Base
   end
 
   post '/play_game/:player' do |player|
-    @message = get_message(player, params[:coordinate])
+    message = get_message(player, params[:coordinate])
     shoot_at(params[:coordinate], player)
     redirect "/victory/#{player}" if GAME.end?
     @attacking_player = player
     @tracking_grid = opponent_grid(player)
     erb :play_game
+    GAME.change_turn
+    redirect "/waiting_to_shoot/#{player}?message=#{message}"
   end
 
   get '/victory/:player' do |player|
     @winner = player
     erb :victory
+  end
+
+  def your_turn?(player)
+    GAME.player(player) == GAME.current_player
   end
 
   def own_grid(player)
