@@ -9,6 +9,7 @@ h2{
 }
 
 table{
+	float:left;
 	border-collapse:collapse;
 	border:1px solid #FF0000;
 }

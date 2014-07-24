@@ -32,7 +32,6 @@ class BattleShips < Sinatra::Base
     erb :session_full
   end
 
-
   get '/waiting' do
     redirect "/launch_game/#{session[:player]}/0" if GAME.start? 
     erb :waiting
@@ -53,16 +52,12 @@ class BattleShips < Sinatra::Base
     @deploying_player = player
     ship_to_deploy = nth_ship(n.to_i - 1, player)
     coords = get_coords(params[:ship_start], params[:ship_end])
-    
     unless GAME.valid_coordinates_for?(ship_to_deploy, own_grid(player), coords)
       redirect "/launch_game/#{player}/#{n-1}?error=ERROR:%20Bad%20Coordinate" 
     end
-    
     GAME.player(player).deploy_ship_to(coords, ship_to_deploy)
-
     GAME.status = :deployed if GAME.ships_deployed?
     redirect "/waiting/#{player}" if n == 5
-    
     @target_grid = own_grid(player)
     @current_ship = nth_ship(n, player)
     @next_ship = n + 1
@@ -76,6 +71,7 @@ class BattleShips < Sinatra::Base
 
   get '/waiting_to_shoot/:player' do |player|
     redirect "/play_game/#{player}" if your_turn?(player)
+    redirect "/defeat/#{player}" if GAME.end?
     @message = params[:message]
     erb :waiting
   end
@@ -100,6 +96,11 @@ class BattleShips < Sinatra::Base
   get '/victory/:player' do |player|
     @winner = player
     erb :victory
+  end
+
+  get '/defeat/:player' do |player|
+    @loser = player
+    erb :defeat
   end
 
   def add_new_player(player)
@@ -152,6 +153,7 @@ class BattleShips < Sinatra::Base
 
   # start the server if ruby file executed directly
   run! if app_file == $0
+
 end
 
   
