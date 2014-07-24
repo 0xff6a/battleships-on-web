@@ -69,14 +69,14 @@ class BattleShips < Sinatra::Base
   get '/play_game/:player' do |player|
     @attacking_player = player
     @tracking_grid = GAME.opponent(player).grid
-    @message = "HIT"
     erb :play_game
   end
 
   post '/play_game/:player/' do |player|
+    @message = GAME.opponent(player).grid.cell(params[:coordinate].to_sym).message
+    GAME.player(player).shoot_at(GAME.opponent(player).grid, params[:coordinate].to_sym)
     @attacking_player = player
     @tracking_grid = GAME.opponent(player).grid
-    @message = "HIT"
     erb :play_game
   end
 

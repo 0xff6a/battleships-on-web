@@ -6,4 +6,12 @@ class Miss < AttackedCell
 		"O"
 	end
 
+	def display_own
+		display
+	end
+
+	def display_opponent
+		display
+	end
+
 end
