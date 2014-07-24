@@ -22,11 +22,9 @@ class BattleShips < Sinatra::Base
   end
 
   post '/new_game' do
-    @name, session[:player] = params[:player], params[:player]
-    redirect '/new_game' if @name.empty?
-    GAME.add(Player.new(params[:player]))
+    add_new_player(params[:player])
     redirect "/launch_game/#{session[:player]}/0" if GAME.start?
-    redirect '/session_full' if GAME.player_count > 2
+    redirect '/session_full' if GAME.full?
     redirect '/waiting'
   end
 
@@ -72,8 +70,7 @@ class BattleShips < Sinatra::Base
   end
 
   get '/waiting/:player' do |player|
-    puts session[:deployed?] 
-    redirect "/play_game/#{player}" if GAME.status == :deployed && your_turn?(player)
+    redirect "/play_game/#{player}" if time_to_play?(player)
     erb :waiting
   end
 
@@ -103,6 +100,21 @@ class BattleShips < Sinatra::Base
   get '/victory/:player' do |player|
     @winner = player
     erb :victory
+  end
+
+  def add_new_player(player)
+    @name = player
+    redirect '/new_game' if @name.empty?
+    session[:player] = player.gsub(" ", "_")
+    add_player(player.gsub(" ", "_"))
+  end
+
+  def time_to_play?(player)
+    GAME.status == :deployed && your_turn?(player)
+  end
+
+  def add_player(player)
+    GAME.add(Player.new(player))
   end
 
   def valid_shot?(message, coordinate)

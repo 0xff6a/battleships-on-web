@@ -58,7 +58,7 @@ describe Game do
 			expect(game.player("jeremy")).to eq player2
 		end
 
-		it 'shoudl return an opponent name' do
+		it 'should return an opponent name' do
 			game.add(player1)
 			game.add(player2)
 			expect(game.opponent("jeremy")).to eq player1
@@ -68,6 +68,14 @@ describe Game do
 			game.add(player1)
 			game.add(player2)
 			expect(game.ships_deployed?).to be true
+		end
+
+		it 'know when it is full' do
+			expect(game).not_to be_full
+			game.add(player1)
+			game.add(player2)
+			game.add(player1)
+			expect(game).to be_full
 		end
 
 	end

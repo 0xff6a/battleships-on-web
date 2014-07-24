@@ -42,6 +42,10 @@ class Game
 		player_count == 2
 	end
 
+	def full?
+		player_count > 2
+	end
+
 	def end?
 		other_player.count_sunken_ships == 5 or current_player.count_sunken_ships == 5 
 	end
