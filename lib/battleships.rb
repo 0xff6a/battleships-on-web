@@ -41,8 +41,8 @@ class BattleShips < Sinatra::Base
   get '/launch_game/:player' do |player|
     session[:counter] = 0
     @deploying_player = player
-    @target_grid = GAME.player(player).grid
-    @current_ship = GAME.player(player).ships[session[:counter]]
+    @target_grid = own_grid(player)
+    @current_ship = nth_ship([session[:counter])
     session[:counter] +=1
     @counter = session[:counter]
     erb :launch_game
@@ -50,12 +50,16 @@ class BattleShips < Sinatra::Base
 
   post '/launch_game/:player/:n' do |player, n|
     @deploying_player = player
-    ship_to_deploy = GAME.player(player).ships[n.to_i-1]
-    coords = GAME.generate_coordinates(params[:ship_start].to_sym, params[:ship_end].to_sym)
+    ship_to_deploy = nth_ship(n.to_i - 1)
+    coords = get_coords(params[:ship_start], params[:ship_end])
+    # redirect "/launch_game/#{player}/#{n-1}" unless valid_coordinates_for(ship_to_deploy, GAME.player(player).grid, coords)
     GAME.player(player).deploy_ship_to(coords, ship_to_deploy)
+
     redirect "/launch_game/#{player}/waiting" if session[:counter] == 5
-    @target_grid = GAME.player(player).grid
-    @current_ship = GAME.player(player).ships[n.to_i]
+    
+    @target_grid = own_grid(player)
+    @current_ship = nth_ship(n)
+    
     session[:counter] +=1
     @counter = session[:counter]
     erb :launch_game
@@ -68,16 +72,16 @@ class BattleShips < Sinatra::Base
 
   get '/play_game/:player' do |player|
     @attacking_player = player
-    @tracking_grid = GAME.opponent(player).grid
+    @tracking_grid = opponent_grid(player)
     erb :play_game
   end
 
   post '/play_game/:player/' do |player|
-    @message = GAME.opponent(player).grid.cell(params[:coordinate].to_sym).message
-    GAME.player(player).shoot_at(GAME.opponent(player).grid, params[:coordinate].to_sym)
+    @message = get_message(player, params[:coordinate])
+    shoot_at(params[:coordinate], player)
     redirect "/victory/#{player}" if GAME.end?
     @attacking_player = player
-    @tracking_grid = GAME.opponent(player).grid
+    @tracking_grid = opponent_grid(player)
     erb :play_game
   end
 
@@ -86,6 +90,29 @@ class BattleShips < Sinatra::Base
     erb :victory
   end
 
+  def own_grid(player)
+    GAME.player(player).grid
+  end
+
+  def opponent_grid(player)
+    GAME.opponent(player).grid
+  end
+
+  def nth_ship(n)
+    GAME.player(player).ships[n.to_i]
+  end
+
+  def shoot_at(coordinate, player)
+    GAME.player(player).shoot_at(GAME.opponent(player).grid, coordinate.to_sym)
+  end
+
+  def get_message(player, coordinates)
+    GAME.opponent(player).grid.cell(coordinates.to_sym).message
+  end
+
+  def get_coords(ship_start, ship_end)
+    GAME.generate_coordinates(ship_start.downcase.to_sym, ship_end.downcase.to_sym)
+  end
 
   # start the server if ruby file executed directly
   run! if app_file == $0
