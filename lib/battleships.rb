@@ -84,19 +84,18 @@ class BattleShips < Sinatra::Base
   end
 
   get '/play_game/:player' do |player|
+    @message = params[:message]
     @attacking_player = player
     @tracking_grid = opponent_grid(player)
+    @own_grid = own_grid(player)
     erb :play_game
   end
 
   post '/play_game/:player' do |player|
     message = get_message(player, params[:coordinate])
-    redirect "/play_game/#{player}" unless valid_shot?(message, params[:coordinate]) 
+    redirect "/play_game/#{player}?message=#{message}" unless valid_shot?(message, params[:coordinate]) 
     shoot_at(params[:coordinate], player)
     redirect "/victory/#{player}" if GAME.end?
-    @attacking_player = player
-    @tracking_grid = opponent_grid(player)
-    erb :play_game
     GAME.change_turn
     redirect "/waiting_to_shoot/#{player}?message=#{message}"
   end

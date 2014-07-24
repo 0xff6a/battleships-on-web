@@ -1,6 +1,12 @@
-
-	<h2>Let's rock and roll!</h2>
+	<h2>	
+	<% if @message %>
+	 		<%=@message %>
+	 	<% else %>
+			Let's rock and roll
+		<% end %>
+	</h2>
 	<table>
+		<caption>Intelligence Reports</caption>
 		<tr><td></td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>F</td><td>G</td><td>H</td><td>I</td><td>J</td></tr>
 			<tr>
 				<% counter = 0
@@ -9,6 +15,20 @@
 					<td><%= counter%></td>
 					<% row.each do |col| %>
 						<td><%= col.display_opponent %></td>
+					<% end %>
+					</tr> 
+				<% end %>
+	</table>
+	<table>
+		<caption>Own Positions</caption>
+		<tr><td></td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>F</td><td>G</td><td>H</td><td>I</td><td>J</td></tr>
+			<tr>
+				<% counter = 0
+				@own_grid.cells.each do |row| 
+					counter = counter + 1%>
+					<td><%= counter%></td>
+					<% row.each do |col| %>
+						<td><%= col.display_own %></td>
 					<% end %>
 					</tr> 
 				<% end %>
