@@ -26,6 +26,10 @@ class Game
 		players.select{ |player| player.name == name }.first
 	end
 
+	def opponent(name)
+		players.select{ |player| player.name != name }.first
+	end
+
 	def add(player)
 		players << player
 	end

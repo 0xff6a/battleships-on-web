@@ -4,6 +4,29 @@
   <title>BattleShips App</title>
 </head>
 <body>
-		<h1>Let's rock and roll</h2>
+	<h1>Let's rock and roll!</h1>
+	<table>
+		<tr><td></td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>F</td><td>G</td><td>H</td><td>I</td><td>J</td></tr>
+			<tr>
+				<% counter = 0
+				@tracking_grid.cells.each do |row| 
+					counter = counter + 1%>
+					<td><%= counter%></td>
+					<% row.each do |col| %>
+						<td><%= col.display_opponent %></td>
+					<% end %>
+					</tr> 
+				<% end %>
+	</table>
+	<sidebar>
+		<%=@message%>
+	</sidebar>
+		<form id="order-fire" action=<%="/play_game/#{@attacking_player}/"%> method="post">
+		<p>
+			<input type="text" name="coordinate" placeholder = "e.g a1">
+		</p>
+		<button id="submit-fire-coordinate" type="submit">Fire!</button>
+		</p>	
+	</form>
 </body>
 </html>

@@ -61,12 +61,22 @@ class BattleShips < Sinatra::Base
     erb :launch_game
   end
 
-  get '/launch_game/:player/waiting' do
-    redirect '/play_game' if GAME.ships_deployed?
+  get '/launch_game/:player/waiting' do |player|
+    redirect "/play_game/#{player}" if GAME.ships_deployed?
     erb :waiting
   end
 
-  get '/play_game' do
+  get '/play_game/:player' do |player|
+    @attacking_player = "ME"
+    @tracking_grid = GAME.player(player).grid
+    @message = "HIT"
+    erb :play_game
+  end
+
+  post '/play_game/:player/' do |player|
+    @attacking_player = player
+    @tracking_grid = GAME.player(player).grid
+    @message = "HIT"
     erb :play_game
   end
 
