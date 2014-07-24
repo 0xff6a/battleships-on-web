@@ -7,13 +7,17 @@
 	<h1>Battleships</h1>
 	<h3>Welcome <%=@deploying_player%>! Deploy your ships to battle</h3> 
 	<table>
-		<% @target_grid.cells.each do |row| %>
+		<tr><td></td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>F</td><td>G</td><td>H</td><td>I</td><td>J</td></tr>
 			<tr>
-				<% row.each do |col| %>
-					<td><%= col.display_own %></td>
+				<% counter = 0
+				@target_grid.cells.each do |row| 
+					counter = counter + 1%>
+					<td><%= counter%></td>
+					<% row.each do |col| %>
+						<td><%= col.display_own %></td>
+					<% end %>
+					</tr> 
 				<% end %>
-			</tr>
-		<% end %>
 	</table>
 	<form id="deploy-ships" action=<%="/launch_game/#{@deploying_player}/#{@counter}"%> method="post">
 		<p>
