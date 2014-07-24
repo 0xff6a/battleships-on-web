@@ -88,6 +88,7 @@ class BattleShips < Sinatra::Base
 
   post '/play_game/:player' do |player|
     message = get_message(player, params[:coordinate])
+    redirect "/play_game/#{player}" unless valid_shot?(message, params[:coordinate]) 
     shoot_at(params[:coordinate], player)
     redirect "/victory/#{player}" if GAME.end?
     @attacking_player = player
@@ -100,6 +101,11 @@ class BattleShips < Sinatra::Base
   get '/victory/:player' do |player|
     @winner = player
     erb :victory
+  end
+
+  def valid_shot?(message, coordinate)
+    return false if message == "MISFIRE!"
+    GAME.valid_coordinate?(coordinate)
   end
 
   def your_turn?(player)

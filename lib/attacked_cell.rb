@@ -5,7 +5,7 @@ class AttackedCell
 	end
 
 	def message
-		'This cell has already been attacked. Try again!'
+		'MISFIRE!'
 	end
 	
 end

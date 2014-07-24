@@ -9,7 +9,7 @@ let(:attacked_cell) {AttackedCell.new}
 	end
 
 	it 'can tell the user it has been attacked' do
-		expect(attacked_cell.message).to eq 'This cell has already been attacked. Try again!'
+		expect(attacked_cell.message).to eq 'MISFIRE!'
 	end
 
 end
