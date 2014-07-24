@@ -7,12 +7,13 @@ class BattleShips < Sinatra::Base
   GAME = Game.new
 
   enable :sessions
-  set :session_secret, "My session secret"
-  set :views, Proc.new{ File.join(root, '..', 'views') }
-  set :public_folder, Proc.new{ File.join(root, '..', 'public') }
+  set :session_secret,  "My session secret"
+  set :views,           Proc.new{ File.join(root, '..', 'views')  }
+  set :public_folder,   Proc.new{ File.join(root, '..', 'public') }
 
   get '/' do
     session[:player] = ""
+    session[:deployed?] = false
     erb :index
   end
 
@@ -61,7 +62,8 @@ class BattleShips < Sinatra::Base
     
     GAME.player(player).deploy_ship_to(coords, ship_to_deploy)
 
-    redirect "/waiting_to_shoot/#{player}" if n == 5
+    GAME.status = :deployed if GAME.ships_deployed?
+    redirect "/waiting/#{player}" if n == 5
     
     @target_grid = own_grid(player)
     @current_ship = nth_ship(n, player)
@@ -70,7 +72,8 @@ class BattleShips < Sinatra::Base
   end
 
   get '/waiting/:player' do |player|
-    redirect "/play_game/#{player}" if GAME.ships_deployed? 
+    puts session[:deployed?] 
+    redirect "/play_game/#{player}" if GAME.status == :deployed && your_turn?(player)
     erb :waiting
   end
 
