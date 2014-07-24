@@ -1,5 +1,11 @@
 
-	<h3>Welcome <%=@deploying_player%>! Deploy your ships to battle</h3> 
+	<h3>
+		<% if @error %>
+	 		<%=@error %>
+	 	<% else %>
+			Welcome <%=@deploying_player%>! Deploy your ships to battle
+		<% end %>
+	</h3> 
 	<table>
 		<tr><td></td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>F</td><td>G</td><td>H</td><td>I</td><td>J</td></tr>
 			<tr>

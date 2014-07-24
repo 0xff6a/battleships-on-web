@@ -28,7 +28,7 @@ shared_examples 'a coordinate validator' do
 
 	it 'should check if coordinates are valid - belong to grid' do
 		expect(helper.on_grid?([:j11, :j12])).to be false
-		expect(helper.on_grid?([:j8, :j9])).to be true
+		expect(helper.on_grid?([:j9, :j10])).to be true
 	end
 
 	it 'should check if coordinates are valid to attack' do

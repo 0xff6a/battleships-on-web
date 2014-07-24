@@ -34,7 +34,7 @@ module CoordinateValidator
 	end
 
 	def valid_coordinate?(coordinate)
-		number(coordinate).between?(1,9) && letter(coordinate).between?('a', 'j')
+		number(coordinate).between?(1,10) && letter(coordinate).between?('a', 'j')
 	end
 
 	def correct_number_of?(coordinates, ship)
