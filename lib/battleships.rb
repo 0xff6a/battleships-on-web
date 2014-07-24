@@ -11,7 +11,6 @@ class BattleShips < Sinatra::Base
 
   get '/' do
     session[:player] = ""
-    session[:deployed_ships] = 0
     erb :index
   end
 
@@ -23,7 +22,7 @@ class BattleShips < Sinatra::Base
     @name, session[:player] = params[:player], params[:player]
     redirect '/new_game' if @name.empty?
     GAME.add(Player.new(params[:player]))
-    redirect "/launch_game/#{session[:player]}" if GAME.start?
+    redirect "/launch_game/#{session[:player]}/0" if GAME.start?
     redirect '/session_full' if GAME.player_count > 2
     redirect '/waiting'
   end
@@ -34,38 +33,38 @@ class BattleShips < Sinatra::Base
 
 
   get '/waiting' do
-    redirect "/launch_game/#{session[:player]}" if GAME.start?
+    redirect "/launch_game/#{session[:player]}/0" if GAME.start?
     erb :waiting
   end
 
-  get '/launch_game/:player' do |player|
-    session[:counter] = 0
+  get '/launch_game/:player/:n' do |player, n|
+    n = n.to_i
     @deploying_player = player
     @target_grid = own_grid(player)
-    @current_ship = nth_ship(session[:counter], player)
-    session[:counter] +=1
-    @counter = session[:counter]
+    @current_ship = nth_ship(n, player)
+    @next_ship = n + 1
     erb :launch_game
   end
 
   post '/launch_game/:player/:n' do |player, n|
+    n = n.to_i
     @deploying_player = player
     ship_to_deploy = nth_ship(n.to_i - 1, player)
     coords = get_coords(params[:ship_start], params[:ship_end])
-    # redirect "/launch_game/#{player}/#{n-1}" unless valid_coordinates_for(ship_to_deploy, GAME.player(player).grid, coords)
+    
+    # redirect "/launch_game/#{player}/#{n.to_i-1}" unless GAME.valid_coordinates_for?(ship_to_deploy, own_grid(player), coords)
+    
     GAME.player(player).deploy_ship_to(coords, ship_to_deploy)
 
-    redirect "/launch_game/#{player}/waiting" if session[:counter] == 5
+    redirect "/waiting/#{player}" if n == 5
     
     @target_grid = own_grid(player)
     @current_ship = nth_ship(n, player)
-    
-    session[:counter] +=1
-    @counter = session[:counter]
+    @next_ship = n + 1
     erb :launch_game
   end
 
-  get '/launch_game/:player/waiting' do |player|
+  get '/waiting/:player' do |player|
     redirect "/play_game/#{player}" if GAME.ships_deployed?
     erb :waiting
   end
@@ -76,7 +75,7 @@ class BattleShips < Sinatra::Base
     erb :play_game
   end
 
-  post '/play_game/:player/' do |player|
+  post '/play_game/:player' do |player|
     @message = get_message(player, params[:coordinate])
     shoot_at(params[:coordinate], player)
     redirect "/victory/#{player}" if GAME.end?
