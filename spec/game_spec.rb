@@ -2,11 +2,12 @@ require 'game'
 
 describe Game do
 
-	let(:game) 		{ Game.new																																											}
-	let(:player1) { double :player1, :name => "other", :grid => grid1, :deploy_ships => nil, :display_grid => nil	}
-	let(:player2)	{ double :player2, :name => "jeremy", :grid => grid2																						}
-	let(:grid1)		{ double :grid1, :count_sunken_ships => 5, :occupied_cell_count => 17														}
-	let(:grid2)		{ double :grid2, :count_sunken_ships => 0, :occupied_cell_count => 17														}
+	let(:game) 		{ Game.new																																					}
+	let(:player1) { double :player1, :name => "other", :grid => grid1, :count_sunken_ships => 5, 
+									:deploy_ships => nil, :display_grid => nil																				}
+	let(:player2)	{ double :player2, :name => "jeremy", :grid => grid2, :count_sunken_ships => 0			}
+	let(:grid1)		{ double :grid1, :occupied_cell_count => 17																					}
+	let(:grid2)		{ double :grid2, :occupied_cell_count => 17																					}
 
 	it_should_behave_like 'a coordinate validator'
 

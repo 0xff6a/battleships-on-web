@@ -43,7 +43,7 @@ class Game
 	end
 
 	def end?
-		other_player.grid.count_sunken_ships == 5 or current_player.grid.count_sunken_ships == 5 
+		other_player.count_sunken_ships == 5 or current_player.count_sunken_ships == 5 
 	end
 
 	def ships_deployed?
