@@ -24,9 +24,14 @@ class BattleShips < Sinatra::Base
     redirect '/new_game' if @name.empty?
     GAME.add(Player.new(params[:player]))
     redirect "/launch_game/#{session[:player]}" if GAME.start?
-    redirect '/full' if GAME.player_count > 2
+    redirect '/session_full' if GAME.player_count > 2
     redirect '/waiting'
   end
+
+  get '/session_full' do
+    erb :session_full
+  end
+
 
   get '/waiting' do
     redirect "/launch_game/#{session[:player]}" if GAME.start?
@@ -49,6 +54,7 @@ class BattleShips < Sinatra::Base
     coords = GAME.generate_coordinates(params[:ship_start].to_sym, params[:ship_end].to_sym)
     GAME.player(player).deploy_ship_to(coords, ship_to_deploy)
     redirect "/launch_game/#{player}/waiting" if session[:counter] == 5
+    redirect "/launch_game/:player/session_full" if GAME.player_count > 2
     @target_grid = GAME.player(player).grid
     @current_ship = GAME.player(player).ships[n.to_i]
     session[:counter] +=1
