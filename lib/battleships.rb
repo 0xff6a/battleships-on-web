@@ -67,15 +67,15 @@ class BattleShips < Sinatra::Base
   end
 
   get '/play_game/:player' do |player|
-    @attacking_player = "ME"
-    @tracking_grid = GAME.player(player).grid
+    @attacking_player = player
+    @tracking_grid = GAME.opponent(player).grid
     @message = "HIT"
     erb :play_game
   end
 
   post '/play_game/:player/' do |player|
     @attacking_player = player
-    @tracking_grid = GAME.player(player).grid
+    @tracking_grid = GAME.opponent(player).grid
     @message = "HIT"
     erb :play_game
   end
