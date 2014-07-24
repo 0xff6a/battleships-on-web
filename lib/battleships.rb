@@ -75,9 +75,15 @@ class BattleShips < Sinatra::Base
   post '/play_game/:player/' do |player|
     @message = GAME.opponent(player).grid.cell(params[:coordinate].to_sym).message
     GAME.player(player).shoot_at(GAME.opponent(player).grid, params[:coordinate].to_sym)
+    redirect "/victory/#{player}" if GAME.end?
     @attacking_player = player
     @tracking_grid = GAME.opponent(player).grid
     erb :play_game
+  end
+
+  get '/victory/:player' do |player|
+    @winner = player
+    erb :victory
   end
 
 
