@@ -42,7 +42,7 @@ class BattleShips < Sinatra::Base
     session[:counter] = 0
     @deploying_player = player
     @target_grid = own_grid(player)
-    @current_ship = nth_ship([session[:counter])
+    @current_ship = nth_ship(session[:counter], player)
     session[:counter] +=1
     @counter = session[:counter]
     erb :launch_game
@@ -50,7 +50,7 @@ class BattleShips < Sinatra::Base
 
   post '/launch_game/:player/:n' do |player, n|
     @deploying_player = player
-    ship_to_deploy = nth_ship(n.to_i - 1)
+    ship_to_deploy = nth_ship(n.to_i - 1, player)
     coords = get_coords(params[:ship_start], params[:ship_end])
     # redirect "/launch_game/#{player}/#{n-1}" unless valid_coordinates_for(ship_to_deploy, GAME.player(player).grid, coords)
     GAME.player(player).deploy_ship_to(coords, ship_to_deploy)
@@ -58,7 +58,7 @@ class BattleShips < Sinatra::Base
     redirect "/launch_game/#{player}/waiting" if session[:counter] == 5
     
     @target_grid = own_grid(player)
-    @current_ship = nth_ship(n)
+    @current_ship = nth_ship(n, player)
     
     session[:counter] +=1
     @counter = session[:counter]
@@ -98,7 +98,7 @@ class BattleShips < Sinatra::Base
     GAME.opponent(player).grid
   end
 
-  def nth_ship(n)
+  def nth_ship(n, player)
     GAME.player(player).ships[n.to_i]
   end
 
