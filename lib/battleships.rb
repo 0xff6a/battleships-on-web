@@ -40,6 +40,7 @@ class BattleShips < Sinatra::Base
   end
 
   get '/launch_game/:player/:n' do |player, n|
+    @error = params[:error]
     n = n.to_i
     @deploying_player = player
     @target_grid = own_grid(player)
@@ -54,7 +55,9 @@ class BattleShips < Sinatra::Base
     ship_to_deploy = nth_ship(n.to_i - 1, player)
     coords = get_coords(params[:ship_start], params[:ship_end])
     
-    # redirect "/launch_game/#{player}/#{n.to_i-1}" unless GAME.valid_coordinates_for?(ship_to_deploy, own_grid(player), coords)
+    unless GAME.valid_coordinates_for?(ship_to_deploy, own_grid(player), coords)
+      redirect "/launch_game/#{player}/#{n-1}?error=ERROR:%20Bad%20Coordinate" 
+    end
     
     GAME.player(player).deploy_ship_to(coords, ship_to_deploy)
 
