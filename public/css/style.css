@@ -1,9 +1,14 @@
-/*body
+/*
+body
 { 
 background: url("http://hdwallpapersfactory.com/wallpaper/water_abstract_ocean_landscapes_nature_carrier_destroyer_navy_desktop_1920x1080_hd-wallpaper-1233652.jpg") fixed center
 ; 
+}*/
+
+head {
+	text-align: center
 }
-*/
+
 h2{
 	text-align: center;
 }

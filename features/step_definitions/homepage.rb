@@ -2,6 +2,10 @@ Given(/^I am on the homepage$/) do
 	visit '/'
 end
 
+Given(/^I am on the deploy ship (\d+) page$/) do |index|
+  visit "/launch_game/Jeremy/#{(index.to_i) - 1}"
+end
+
 When(/^I follow "(.*?)"$/) do |link_name|
   click_link(link_name)
 end
@@ -32,9 +36,17 @@ end
 
 Given(/^"(.*?)" has registered$/) do |player|
   visit '/'
-  click_link("launch-name-input")
-  fill_in("player", :with => player)
-  click_on("Go!")
 end
 
+Given(/^2 players have registered$/) do 
+ register_player("Jeremy")
+ register_player("NotJeremy")
+end
+
+def register_player(name)
+  visit '/'
+  click_link "launch-name-input"
+  fill_in("player", :with => name)
+  click_on("Go!")
+end
 

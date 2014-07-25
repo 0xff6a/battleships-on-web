@@ -18,6 +18,8 @@ module NavigationHelpers
     #
       # when /^(.*)'s profile page$/i
       #   user_profile_path(User.find_by_login($1))
+    when /the deploy ships page/
+      '/launch_game/Jeremy/0'
     when /the name_input page/
     '/name_input'
     else
