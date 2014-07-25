@@ -6,6 +6,10 @@ Given(/^I am on the deploy ship (\d+) page$/) do |index|
   visit "/launch_game/Jeremy/#{(index.to_i) - 1}"
 end
 
+Given(/^I am on the opponent deploy ship (\d+) page$/) do |index|
+  visit "/launch_game/NotJeremy/#{(index.to_i) - 1}"
+end
+
 When(/^I follow "(.*?)"$/) do |link_name|
   click_link(link_name)
 end
@@ -43,6 +47,23 @@ Given(/^2 players have registered$/) do
  register_player("NotJeremy")
 end
 
+Given(/^my ships are deployed$/) do 
+  place_ship("b1", "b4")
+  place_ship("c1", "c3")
+  place_ship("d1", "d3")
+  place_ship("e1", "e2")
+end
+
+When(/^all ships are deployed$/) do
+  place_ship("a1", "a5")
+  place_ship("b1", "b4")
+  place_ship("c1", "c3")
+  place_ship("d1", "d3")
+  place_ship("e1", "e2")
+end
+
+
+
 def register_player(name)
   visit '/'
   click_link "launch-name-input"
@@ -50,3 +71,8 @@ def register_player(name)
   click_on("Go!")
 end
 
+def place_ship(first, last)
+  fill_in("ship_start", :with => first)
+  fill_in("ship_end", :with => last)
+  click_on("Deploy!")
+end

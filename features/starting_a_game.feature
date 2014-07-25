@@ -61,13 +61,15 @@ Feature: Starting the game
 			And I should see "Battleship"
 
 	Scenario: All own ships deployed
-		Given Jeremy's" ships are deployed
+		Given I am on the deploy ship 2 page
+			And my ships are deployed
 		Then I should see "Waiting for the other player"
 
 	Scenario: All ships deployed
-		Given all ships are deployed
-		Then I should see "Let's rock and roll"
-			And I should see a "Fire!" button
+		Given I am on the opponent deploy ship 1 page 
+		When all ships are deployed
+		Then I should see "Waiting for the other player"
+
 
 
 	
