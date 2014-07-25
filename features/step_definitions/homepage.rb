@@ -10,6 +10,10 @@ Given(/^I am on the opponent deploy ship (\d+) page$/) do |index|
   visit "/launch_game/NotJeremy/#{(index.to_i) - 1}"
 end
 
+Given(/^I am on the wait page$/) do
+  visit '/waiting_to_shoot/Jeremy'
+end
+
 When(/^I follow "(.*?)"$/) do |link_name|
   click_link(link_name)
 end
@@ -24,6 +28,11 @@ end
 
 When (/^I fill "(.*?)" with "(.*?)"$/)  do |field, value|
     fill_in(field, :with => value)
+end
+
+When(/^I shoot at "(.*?)"$/) do |coordinate|
+   fill_in('coordinate', :with => coordinate)
+  click_on("Fire!")
 end
 
 When(/^I press "(.*?)"$/) do |button|
@@ -61,8 +70,6 @@ When(/^all ships are deployed$/) do
   place_ship("d1", "d3")
   place_ship("e1", "e2")
 end
-
-
 
 def register_player(name)
   visit '/'
