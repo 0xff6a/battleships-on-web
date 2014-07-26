@@ -1,30 +1,111 @@
-/*
-body
-{ 
-background: url("http://hdwallpapersfactory.com/wallpaper/water_abstract_ocean_landscapes_nature_carrier_destroyer_navy_desktop_1920x1080_hd-wallpaper-1233652.jpg") fixed center
-; 
-}*/
+body {
+	text-align: center;
+	background-color: black;
+  background-image: url(/images/steel.jpg);
+  background-size:   cover;                    
+  background-repeat: no-repeat;
+}
+
+h1 {
+	background: white;
+	color: black;
+	font-family: impact;
+	font-size: 40pt;
+}
 
 head {
 	text-align: center
 }
 
-h2{
+h2 {
+	font-family: impact;
 	text-align: center;
 }
 
+h3 {
+	font-family: impact;
+	text-align: center;
+}
+
+h4 {
+	font-family: impact;
+	font-size: 20pt;
+	text-align: center;
+}
+
+h6 {
+	font-family: impact;
+	text-align: center;
+}
+
+p {
+	display: inline-block;
+	font-family: impact;	
+}
+
+#launch-name-input {
+	
+}
+
+a {
+	font-family: impact;
+	color: black;
+	background: transparent;
+	font-size: 40pt;
+}
+
+#deploy-ships {
+	/*float: left;*/
+}
+
+form {
+	font-family: impact;
+	color: black;
+}
+
 table{
-	float:left;
+	float: none;
 	border-collapse:collapse;
-	border:1px solid #FF0000;
+	border:1px solid #00FF33;
+	display: inline-block;
+	color: #00FF33;
 }
 
 table td{
-	border:1px solid #FF0000;
-	background-color: #0099FF;
+	border:1px solid #00FF33;
+	background-color: #0A0A0A;
 	vertical-align: center;
 }
 
-td{
-	 padding: 5px;
+td, tr {
+	width: 1em; height: 1em;
+	padding: 5px;
 }
+
+#submit-ship-positions {
+	font-size: 15pt
+}
+
+button {
+	font-size: 25pt;
+	font-family: impact;
+	background: yellow;
+	border-color: black;
+	width: 4em;  height: 2em;
+	float: none;
+	display: inline-block;
+}
+
+section {
+	width: 600px;
+	margin: 0px;
+	display: inline-block;
+}
+
+aside {
+	top: 10px
+	display: inline-block;
+}
+
+
+

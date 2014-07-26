@@ -1,11 +1,11 @@
-
-	<h3>
-		<% if @error %>
-	 		<%=@error %>
-	 	<% else %>
-			Welcome <%=@deploying_player%>! Deploy your ships to battle
-		<% end %>
-	</h3> 
+<h3>
+	<% if @error %>
+ 		<%=@error %>
+ 	<% else %>
+		Welcome <%=@deploying_player%>! Deploy your ships to battle
+	<% end %>
+</h3> 
+<section>
 	<table>
 		<tr><td></td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>F</td><td>G</td><td>H</td><td>I</td><td>J</td></tr>
 			<tr>
@@ -19,13 +19,18 @@
 					</tr> 
 				<% end %>
 	</table>
+</section>
+<aside>
+	<div>
+		<h4><%=@current_ship.class%></h4>
+	</div>
 	<form id="deploy-ships" action=<%="/launch_game/#{@deploying_player}/#{@next_ship}"%> method="post">
-		<p>
-			<%=@current_ship.class%> <label for="ship_start">Start</label>
-			<input type="text" name="ship_start">
-			<label for="ship_end">End</label>
-			<input type="text" name="ship_end">
-		</p>
-		<button id="submit-ship-positions" type="submit">Deploy!</button>
-		</p>	
+		<label for="ship_start">Start</label>
+		<input type="text" name="ship_start">
+		<label for="ship_end">End</label>
+		<input type="text" name="ship_end">
+		<div>
+			<button id="submit-ship-positions" type="submit">Deploy!</button>
+		</div>	
 	</form>
+</aside>
