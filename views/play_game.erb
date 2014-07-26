@@ -37,9 +37,9 @@
 		<a href=""></a>
 		<%=@message%>
 	</sidebar>
-		<form id="order-fire" action=<%="/play_game/#{@attacking_player}"%> method="post">
+		<form action=<%="/play_game/#{@attacking_player}"%> method="post">
 		<p>
-			<input type="text" name="coordinate" placeholder = "e.g a1">
+			<input id="order-fire" type="text" name="coordinate" placeholder = "e.g a1">
 		</p>
 		<button id="submit-fire-coordinate" type="submit">Fire!</button>
 		</p>	

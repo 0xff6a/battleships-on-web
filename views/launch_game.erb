@@ -26,9 +26,9 @@
 	</div>
 	<form id="deploy-ships" action=<%="/launch_game/#{@deploying_player}/#{@next_ship}"%> method="post">
 		<label for="ship_start">Start</label>
-		<input type="text" name="ship_start">
+		<input class="small-coord" type="text" name="ship_start">
 		<label for="ship_end">End</label>
-		<input type="text" name="ship_end">
+		<input class="small-coord" type="text" name="ship_end">
 		<div>
 			<button id="submit-ship-positions" type="submit">Deploy!</button>
 		</div>	
