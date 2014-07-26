@@ -35,6 +35,7 @@ h4 {
 	font-family: impact;
 	font-size: 20pt;
 	text-align: center;
+	margin: 10px;
 }
 
 h6 {
@@ -47,8 +48,8 @@ p {
 	font-family: impact;	
 }
 
-#launch-name-input {
-	
+#Go {
+	margin-top: 20px;
 }
 
 a {
@@ -60,6 +61,15 @@ a {
 
 #deploy-ships {
 	/*float: left;*/
+}
+
+#name-input {
+	width: 130px;
+	height: 30px;
+	font-family: impact;
+	font-size: 15pt;
+	border-color: black;
+	border-width: medium;
 }
 
 form {
@@ -96,6 +106,7 @@ caption {
 }
 
 #submit-ship-positions {
+	margin-top: 20px;
 	font-size: 15pt
 }
 
@@ -107,6 +118,7 @@ button {
 	width: 4em;  height: 2em;
 	float: none;
 	display: inline-block;
+	border-width: medium;
 }
 
 section {
