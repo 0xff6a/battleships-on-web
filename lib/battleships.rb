@@ -103,6 +103,18 @@ class BattleShips < Sinatra::Base
     erb :defeat
   end
 
+  get '/reset' do
+    reset_game
+    erb :reset
+  end
+
+  def reset_game
+    GAME.players = []
+    GAME.status = nil
+    session[:player] = ""
+    session[:deployed?] = false
+  end
+
   def add_new_player(player)
     @name = player
     redirect '/new_game' if @name.empty?

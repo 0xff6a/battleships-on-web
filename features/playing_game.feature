@@ -103,7 +103,7 @@ Feature: Playing the Game
 	Scenario: Resetting the game
 		Given I am on the reset page
 			Then I should see "GAME RESET"
-		When I try to regsiter a player
+		When I try to register a player
 		Then I should not see "The BattleShip server is currently full!"
 
 

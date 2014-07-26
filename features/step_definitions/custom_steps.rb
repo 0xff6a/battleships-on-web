@@ -22,6 +22,10 @@ Given(/^I am the next player to shoot$/) do
   visit '/play_game/NotJeremy'
 end
 
+Given(/^I am on the reset page$/) do
+  visit '/reset'
+end
+
 When(/^I follow "(.*?)"$/) do |link_name|
   click_link(link_name)
 end
@@ -79,8 +83,11 @@ Given(/^I sink all my opponent's ships$/) do
   coordinates.each do |coordinate| 
     visit '/play_game/Jeremy'
     fire_at(coordinate) 
-  end
-  
+  end 
+end
+
+When(/^I try to register a player$/) do
+  register_player("Hubot")
 end
 
 def fire_at(coordinate)
