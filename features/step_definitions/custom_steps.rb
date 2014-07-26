@@ -50,14 +50,6 @@ When(/^I press "(.*?)"$/) do |button|
   click_on(button)
 end
 
-Then(/^I should stay on "(.*?)"$/) do |path|
-  # expect(current_path).to eq(path)
-end
-
-Then(/^I the "(.*?)" button should have validation$/) do |button|
-  page.all(button, :required => true)
-end
-
 Given(/^"(.*?)" has registered$/) do |player|
   visit '/'
 end
