@@ -36,9 +36,8 @@ require 'player'
 
 		it "should be able to shoot at opponent\'s board" do 
 			other_grid  = Player.new("Zumwalt").grid
-			at_coordinate    = 'A1'
-			expect(other_grid).to receive(:attack_cell).with(at_coordinate)
-			player.shoot_at(other_grid, at_coordinate)
+			expect(other_grid).to receive(:attack_cell).with('A1')
+			player.shoot_at(other_grid, 'A1')
 		end
 
 		it 'should know how many sunken ships it has' do

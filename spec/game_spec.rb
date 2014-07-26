@@ -43,15 +43,6 @@ describe Game do
 		it 'should know which is the other player' do
 			expect(game.other_player).to be game.players[1]
 		end
-		
-		it 'should have a status of nil initially' do
-			expect(game.status).to be nil
-		end
-
-		it 'can start the game' do
-			game.start_game
-			expect(game.status).to be :started
-		end
 
 		it 'should return player by name' do
 			game.add(player2)
