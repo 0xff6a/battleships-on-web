@@ -1,4 +1,4 @@
-require './lib/cell'
+require_relative 'cell'
 
 class Grid
 
@@ -11,8 +11,6 @@ class Grid
 		@size = DEFAULT_SIZE
 		@cells = create_cells
 	end
-
-	#Context: cells in the grid
 
 	def create_cells
 		Array.new(size) { Array.new(size) { Cell.new } }

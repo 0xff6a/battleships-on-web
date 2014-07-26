@@ -1,8 +1,7 @@
-require './lib/water'
-require './lib/attacked_cell'
-require './lib/hit'
-require './lib/miss'
-
+require_relative 'water'
+require_relative 'attacked_cell'
+require_relative 'hit'
+require_relative 'miss'
 
 class Cell 
 

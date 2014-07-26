@@ -30,9 +30,6 @@ class Ship
 
 end
 
-# below are the types of ships that are deployed
-# these are sub-classes of the ship (super)class
-
 class AircraftCarrier < Ship
 	def initialize
 		super(5)

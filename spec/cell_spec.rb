@@ -6,11 +6,6 @@ describe 'cell' do
 	let(:ship)							{ double :ship, :attack! => nil		}
 	let(:occupied_cell)     { cell.occupy_with(ship)			    }
 
-
-	before(:each) do
-		allow(STDOUT).to receive(:puts)
-	end
-
 	it 'should not be occupied when created' do
 		expect(cell).not_to be_occupied
 	end

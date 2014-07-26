@@ -1,6 +1,5 @@
 require 'sinatra/base'
 require_relative 'game'
-require_relative 'grid'
 
 class BattleShips < Sinatra::Base
 
@@ -14,7 +13,6 @@ class BattleShips < Sinatra::Base
 
   get '/' do
     session[:player] = ""
-    session[:deployed?] = false
     erb :index
   end
 
@@ -53,11 +51,12 @@ class BattleShips < Sinatra::Base
     @deploying_player = player
     ship_to_deploy = nth_ship(n.to_i - 1, player)
     coords = get_coords(params[:ship_start], params[:ship_end])
+    
     unless GAME.valid_coordinates_for?(ship_to_deploy, own_grid(player), coords)
       redirect "/launch_game/#{player}/#{n-1}?error=ERROR:%20Bad%20Coordinate" 
     end
-    GAME.player(player).deploy_ship_to(coords, ship_to_deploy)
-    GAME.status = :deployed if GAME.ships_deployed?
+    
+    deploy_ships(player, coords, ship_to_deploy)
     redirect "/waiting/#{player}" if n == 5
     @target_grid = own_grid(player)
     @current_ship = nth_ship(n, player)
@@ -109,11 +108,15 @@ class BattleShips < Sinatra::Base
     erb :reset
   end
 
+  def deploy_ships(player, coords, ship_to_deploy)
+    GAME.player(player).deploy_ship_to(coords, ship_to_deploy)
+    GAME.status = :deployed if GAME.ships_deployed?
+  end
+
   def reset_game
     GAME.players = []
     GAME.status = nil
     session[:player] = ""
-    session[:deployed?] = false
   end
 
   def add_new_player(player)
