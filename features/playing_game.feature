@@ -96,12 +96,15 @@ Feature: Playing the Game
 			And I should see "FRIENDLY"
 
 	Scenario: Losing the game
-		Given my opponent sinks all my ships
-		Then I should see "DEFEATED!"
+		Given I am waiting to shoot
+			And I sink all my opponent's ships
+		Then I should see "WINS!"
 
-	Scenario: Losing the game
-		Given I sink all my opponent's ships
-		Then I should see "VICTORY!"
+	Scenario: Resetting the game
+		Given I am on the reset page
+			Then I should see "GAME RESET"
+		When I try to regsiter a player
+		Then I should not see "The BattleShip server is currently full!"
 
 
 	

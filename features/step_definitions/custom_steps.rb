@@ -39,8 +39,7 @@ When (/^I fill "(.*?)" with "(.*?)"$/)  do |field, value|
 end
 
 When(/^I shoot at "(.*?)"$/) do |coordinate|
-   fill_in('coordinate', :with => coordinate)
-  click_on("Fire!")
+   fire_at(coordinate)
 end
 
 When(/^I press "(.*?)"$/) do |button|
@@ -73,6 +72,20 @@ end
 
 When(/^all ships are deployed$/) do
   place_all_ships("NotJeremy")
+end
+
+Given(/^I sink all my opponent's ships$/) do
+  coordinates = %w(a1, a2, a3, a4, a5, b1, b2, b3, b4, c1, c2, c3, d1, d2, d3, e1, e2)
+  coordinates.each do |coordinate| 
+    visit '/play_game/Jeremy'
+    fire_at(coordinate) 
+  end
+  
+end
+
+def fire_at(coordinate)
+  fill_in('coordinate', :with => coordinate)
+  click_on("Fire!")
 end
 
 def register_player(name)
