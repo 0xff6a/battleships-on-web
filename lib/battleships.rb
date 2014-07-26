@@ -7,6 +7,7 @@ class BattleShips < Sinatra::Base
   GAME = Game.new
 
   enable :sessions
+
   set :session_secret,  "My session secret"
   set :views,           Proc.new{ File.join(root, '..', 'views')  }
   set :public_folder,   Proc.new{ File.join(root, '..', 'public') }
