@@ -85,7 +85,7 @@ class BattleShips < Sinatra::Base
   end
 
   post '/play_game/:player' do |player|
-    message = get_message(player, params[:coordinate])
+    message = get_message(player, params[:coordinate]) if GAME.valid_coordinate?(params[:coordinate])
     redirect "/play_game/#{player}?message=#{message}" unless valid_shot?(message, params[:coordinate]) 
     shoot_at(params[:coordinate], player)
     redirect "/victory/#{player}" if GAME.end?

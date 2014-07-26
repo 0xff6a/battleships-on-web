@@ -14,6 +14,14 @@ Given(/^I am on the wait page$/) do
   visit '/waiting_to_shoot/Jeremy'
 end
 
+Given(/^I am waiting to shoot$/) do
+ visit '/play_game/Jeremy'
+end
+
+Given(/^I am the next player to shoot$/) do
+  visit '/play_game/NotJeremy'
+end
+
 When(/^I follow "(.*?)"$/) do |link_name|
   click_link(link_name)
 end
@@ -64,11 +72,7 @@ Given(/^my ships are deployed$/) do
 end
 
 When(/^all ships are deployed$/) do
-  place_ship("a1", "a5")
-  place_ship("b1", "b4")
-  place_ship("c1", "c3")
-  place_ship("d1", "d3")
-  place_ship("e1", "e2")
+  place_all_ships("NotJeremy")
 end
 
 def register_player(name)
@@ -76,6 +80,15 @@ def register_player(name)
   click_link "launch-name-input"
   fill_in("player", :with => name)
   click_on("Go!")
+end
+
+def place_all_ships(name)
+  visit "/launch_game/#{name}/0"
+  place_ship("a1", "a5")
+  place_ship("b1", "b4")
+  place_ship("c1", "c3")
+  place_ship("d1", "d3")
+  place_ship("e1", "e2")
 end
 
 def place_ship(first, last)

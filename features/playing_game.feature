@@ -1,7 +1,7 @@
-Feature: Starting the game
-	In order to play battleships
+Feature: Playing the Game
+	In order to win battleships
 	As a nostalgic player
-	I want to start a new game
+	I want to play the game
 
 	Scenario: Registering Player
 		Given I am on the homepage
@@ -70,6 +70,38 @@ Feature: Starting the game
 		When all ships are deployed
 		Then I should see "Waiting for the other player"
 
+	Scenario: Incorrect Coordinate
+		Given I am waiting to shoot
+		When I shoot at "a27"
+		Then I should see "ENEMY"
+			And I should see "FRIENDLY"
+
+	Scenario: Hit
+		Given I am waiting to shoot
+		When I shoot at "a1"
+		Then I should see "HIT"
+			And I should see "Waiting for the other player"
+
+	Scenario: Miss
+		Given I am the next player to shoot
+		When I shoot at "j9"
+		Then I should see "MISS"
+			And I should see "Waiting for the other player"
+
+	Scenario: Misfire
+		Given I am waiting to shoot
+		When I shoot at "a1"
+		Then I should see "MISFIRE"
+			And I should see "ENEMY"
+			And I should see "FRIENDLY"
+
+	Scenario: Losing the game
+		Given my opponent sinks all my ships
+		Then I should see "DEFEATED!"
+
+	Scenario: Losing the game
+		Given I sink all my opponent's ships
+		Then I should see "VICTORY!"
 
 
 	

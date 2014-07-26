@@ -33,11 +33,7 @@
 					</tr> 
 				<% end %>
 	</table>
-	<sidebar>
-		<a href=""></a>
-		<%=@message%>
-	</sidebar>
-		<form action=<%="/play_game/#{@attacking_player}"%> method="post">
+	<form action=<%="/play_game/#{@attacking_player}"%> method="post">
 		<p>
 			<input id="order-fire" type="text" name="coordinate" placeholder = "e.g a1">
 		</p>
